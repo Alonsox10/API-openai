@@ -18,11 +18,14 @@ class ResponsePrompt(BaseModel):
 @app.post("/message")
 async def returnMessage(data: ResponsePrompt):
     response = await client.chat.completions.create(
-        model="gpt-5.2",
-        messages=[{"role":"user" , "content": data.prompt}]
-
+        model= "gpt-5-mini",
+        messages=[
+            {
+                "role":"user",
+                "content":data.prompt
+            }
+        ]
     )
 
-    return {
-        "message": response.choices[0].message.content
-    }
+    message = response.choices[0].message.content
+    return message

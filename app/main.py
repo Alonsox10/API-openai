@@ -17,20 +17,24 @@ class ResponsePrompt(BaseModel):
 
 @app.post("/message")
 async def returnMessage(data: ResponsePrompt):
-    response = await client.responses.create(
-        model="gpt-5-mini",
-        input=[
-            {
-                "role":"user",
-                "content": [
-                    {
-                        "type":"input_text",
-                        "text": data.prompt
-                    }
-                ]
-            }
-        ]
-    )
+    try:
 
-    message = response.output_text
-    return message
+        response = await client.responses.create(
+            model="gpt-5-mini",
+            input=[
+                {
+                    "role":"user",
+                    "content": [
+                        {
+                            "type":"input_text",
+                            "text": data.prompt
+                        }
+                    ]
+                }
+            ]
+        )
+
+        message = response.output_text
+        return message
+    except Exception as e:
+        return {"error": str(e)}
